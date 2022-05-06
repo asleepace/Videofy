@@ -64,7 +64,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    getThumbnails('./src/assets/video.mp4')
+    getThumbnails('src/assets/video.mp4')
   }, [])
 
   return (
