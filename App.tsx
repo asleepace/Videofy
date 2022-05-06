@@ -8,7 +8,8 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getThumbnails } from './src/utils';
 import {
   SafeAreaView,
   ScrollView,
@@ -61,6 +62,10 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+  useEffect(() => {
+    getThumbnails('./src/assets/video.mp4')
+  }, [])
 
   return (
     <SafeAreaView style={backgroundStyle}>

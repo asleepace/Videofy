@@ -1,0 +1,1 @@
+export { getThumbnails } from './ffmpeg';
