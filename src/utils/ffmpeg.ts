@@ -1,4 +1,4 @@
-import {FFmpegKit} from 'ffmpeg-kit-react-native';
+import {FFmpegKit, ReturnCode} from 'ffmpeg-kit-react-native';
 import FileSystem from 'react-native-fs';
 /**
  * FFMPEG Utilities
@@ -11,23 +11,34 @@ import FileSystem from 'react-native-fs';
  * @returns a string command to pass into ffmpeg
  */
 export function generateThumbnails(videoPath: string) {
-  return `ffmpeg -i ${videoPath} -r 1 -s 1280x720 -f image2 screenshot-%03d.jpg`;
+  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr output_%04d.jpg`
 }
 
 export function getThumbnails(videoPath: string) {
   const filePath = getFilePath(videoPath);
-  console.log('loading filepath:', filePath)
-  FFmpegKit.execute(
-    `ffmpeg -i ${filePath} -r 1 -s 1280x720 -f image2 screenshot-%03d.jpg`,
-  ).then(async session => {
-    const returnCode = await session.getReturnCode();
+  const commands = generateThumbnails(filePath)
+  console.log('loading filepath:', commands)
+  FFmpegKit.execute(commands).then(async session => {
+    const returnCode = await session.getReturnCode()
     console.log('[ffmpeg] finished with session:', { session, returnCode })
+    printFiles()
+
+    if (ReturnCode.isSuccess(returnCode)) {
+      console.log('success!')
+    } else if (ReturnCode.isCancel(returnCode)) {
+      console.log('cancelled')
+    } else {
+      console.log('error')
+    }
   });
 }
 
 export function getFilePath(filePath: string) {
+  return `${FileSystem.MainBundlePath}/video.mp4`;
+}
+
+function printFiles() {
   FileSystem.readDir(`${FileSystem.MainBundlePath}`).then((result) => {
     console.log({ result })
   })
-  return `${FileSystem.MainBundlePath}/video.mp4`;
 }
