@@ -14,28 +14,45 @@ export function generateThumbnails(videoPath: string) {
   return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr ${FileSystem.TemporaryDirectoryPath}/output_%04d.jpg`
 }
 
-export function getThumbnails(videoPath: string) {
-  const filePath = getFilePath(videoPath);
+export async function getThumbnails() {
+  const filePath = getFilePath()
   const commands = generateThumbnails(filePath)
   console.log('loading filepath:', commands)
-  FFmpegKit.execute(commands).then(async session => {
-    const returnCode = await session.getReturnCode()
-    const output = await session.getOutput()
-    console.log('[ffmpeg] finished with session:', { session, returnCode, output })
-    printFiles()
 
-    if (ReturnCode.isSuccess(returnCode)) {
-      console.log('success!')
-    } else if (ReturnCode.isCancel(returnCode)) {
-      console.log('cancelled')
-    } else {
-      console.log('error')
-    }
-  });
+  const session = await FFmpegKit.execute(commands)
+  const returnCode = await session.getReturnCode()
+  const output = await FileSystem.readDir(FileSystem.TemporaryDirectoryPath)
+
+  console.log(output)
+
+  if (ReturnCode.isSuccess(returnCode)) {
+    console.log('success!')
+  } else if (ReturnCode.isCancel(returnCode)) {
+    console.log('cancelled')
+  } else {
+    console.log('error')
+  }
+
+  return output
+
+  // FFmpegKit.execute(commands).then(async session => {
+  //   const returnCode = await session.getReturnCode()
+  //   const output = await session.getOutput()
+  //   console.log('[ffmpeg] finished with session:', { session, returnCode, output })
+  //   printFiles()
+
+  //   if (ReturnCode.isSuccess(returnCode)) {
+  //     console.log('success!')
+  //   } else if (ReturnCode.isCancel(returnCode)) {
+  //     console.log('cancelled')
+  //   } else {
+  //     console.log('error')
+  //   }
+  // });
 }
 
-export function getFilePath(filePath: string) {
-  return `${FileSystem.MainBundlePath}/video.mp4`;
+export function getFilePath() {
+  return `${FileSystem.MainBundlePath}/video.mp4`
 }
 
 function printFiles() {

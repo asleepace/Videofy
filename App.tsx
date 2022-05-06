@@ -8,9 +8,10 @@
  * @format
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getThumbnails } from './src/utils';
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -57,15 +58,26 @@ const Section: React.FC<{
 };
 
 const App = () => {
+
+  const [files, setFiles] = useState<string[]>([])
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  useEffect(() => {
-    getThumbnails('src/assets/video.mp4')
+  useEffect(async () => {
+    const output = await getThumbnails('src/assets/video.mp4')
+    setFiles(output)
   }, [])
+
+  console.log({ files })
+
+  const images = files.map(data => {
+    console.log(data)
+    return <Image source={{ uri: `file://${data.path}` }} style={{ width: 25, height: 25 }} />
+  })
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -74,25 +86,7 @@ const App = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+        { images }
       </ScrollView>
     </SafeAreaView>
   );
