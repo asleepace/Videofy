@@ -9,7 +9,7 @@ target 'Videofy' do
   # Install FFMPEG Dependencies
   # This line needs to appear before use_native_modules:
   # https://www.npmjs.com/package/ffmpeg-kit-react-native?activeTab=readme
-  pod 'ffmpeg-kit-react-native', :subspecs => ['https'], :podspec => '../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec'
+  pod 'ffmpeg-kit-react-native', :subspecs => ['video'], :podspec => '../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec'
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   config = use_native_modules!

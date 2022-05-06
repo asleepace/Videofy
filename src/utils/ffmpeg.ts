@@ -20,7 +20,8 @@ export function getThumbnails(videoPath: string) {
   console.log('loading filepath:', commands)
   FFmpegKit.execute(commands).then(async session => {
     const returnCode = await session.getReturnCode()
-    console.log('[ffmpeg] finished with session:', { session, returnCode })
+    const output = await session.getOutput()
+    console.log('[ffmpeg] finished with session:', { session, returnCode, output })
     printFiles()
 
     if (ReturnCode.isSuccess(returnCode)) {
