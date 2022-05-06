@@ -9,14 +9,7 @@
  */
 
 import React, {useEffect, useState} from 'react'
-import {
-  Image,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  TouchableHighlight,
-  View,
-} from 'react-native'
+import {Image, SafeAreaView, StatusBar, StyleSheet} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
 import {Timeline} from './src/components/timelines'
 import {getThumbnails} from './src/utils'
@@ -29,19 +22,6 @@ const App = () => {
     getThumbnails().then(data => setFiles(data))
   }, [])
 
-  const images = files.map(data => {
-    const onPress = () => setSelected(data)
-    return (
-      <TouchableHighlight style={styles.image} onPress={onPress}>
-        <Image
-          source={{uri: `file://${data.path}`}}
-          style={styles.image}
-          key={data.name}
-        />
-      </TouchableHighlight>
-    )
-  })
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
@@ -50,7 +30,6 @@ const App = () => {
         style={styles.mainImage}
         resizeMode={'cover'}
       />
-      <View style={styles.frame}>{images}</View>
       <Timeline items={files} onSelect={setSelected} />
     </SafeAreaView>
   )
