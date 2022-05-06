@@ -9,7 +9,14 @@
  */
 
 import React, {useEffect, useState} from 'react'
-import {Image, SafeAreaView, StatusBar, StyleSheet, View} from 'react-native'
+import {
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  TouchableHighlight,
+  View,
+} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
 import {getThumbnails} from './src/utils'
 
@@ -22,19 +29,26 @@ const App = () => {
   }, [])
 
   const images = files.map(data => {
+    const onPress = () => setSelected(data)
     return (
-      <Image
-        source={{uri: `file://${data.path}`}}
-        style={styles.image}
-        key={data.name}
-      />
+      <TouchableHighlight style={styles.image} onPress={onPress}>
+        <Image
+          source={{uri: `file://${data.path}`}}
+          style={styles.image}
+          key={data.name}
+        />
+      </TouchableHighlight>
     )
   })
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
-      <Image source={{uri: selected?.path}} style={styles.mainImage} />
+      <Image
+        source={{uri: selected?.path}}
+        style={styles.mainImage}
+        resizeMode={'cover'}
+      />
       <View style={styles.frame}>{images}</View>
     </SafeAreaView>
   )
@@ -45,10 +59,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 8,
     overflow: 'hidden',
+    width: '100%',
+    height: 60,
     padding: 16,
   },
   image: {
-    height: 40,
+    height: 60,
     flex: 1,
   },
   sectionContainer: {
