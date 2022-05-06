@@ -11,7 +11,7 @@ import FileSystem from 'react-native-fs';
  * @returns a string command to pass into ffmpeg
  */
 export function generateThumbnails(videoPath: string) {
-  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr output_%04d.jpg`
+  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr ${FileSystem.TemporaryDirectoryPath}/output_%04d.jpg`
 }
 
 export function getThumbnails(videoPath: string) {
@@ -39,7 +39,7 @@ export function getFilePath(filePath: string) {
 }
 
 function printFiles() {
-  FileSystem.readDir(`${FileSystem.MainBundlePath}`).then((result) => {
+  FileSystem.readDir(`${FileSystem.TemporaryDirectoryPath}`).then((result) => {
     console.log({ result })
   })
 }
