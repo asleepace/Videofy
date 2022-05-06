@@ -1,5 +1,5 @@
-import {useState} from 'react'
-import {StyleSheet, View} from 'react-native'
+import React from 'react'
+import {Image, ScrollView, StyleSheet, TouchableHighlight} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
 /**
  * Timeline
@@ -12,15 +12,48 @@ interface TimeLineProps {
   onSelect(file: ReadDirItem): void
 }
 
-export const Timeline = (props: TimeLineProps) => {
-  const [index, setIndex] = useState(0)
+export const Timeline = ({items, onSelect}: TimeLineProps) => {
+  const images = items.map(data => {
+    const onPress = () => onSelect(data)
+    return (
+      <TouchableHighlight style={styles.image} onPress={onPress}>
+        <Image
+          source={{uri: `file://${data.path}`}}
+          style={styles.image}
+          key={data.name}
+        />
+      </TouchableHighlight>
+    )
+  })
 
-  return <View style={styles.container} />
+  return (
+    <ScrollView
+      horizontal={true}
+      style={styles.container}
+      contentContainerStyle={styles.content}>
+      {images}
+    </ScrollView>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  content: {
     flexDirection: 'row',
+    height: 60,
+  },
+  container: {
     padding: 16,
+  },
+  frame: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    overflow: 'hidden',
+    width: '100%',
+    height: 60,
+    padding: 16,
+  },
+  image: {
+    height: 60,
+    width: 60,
   },
 })

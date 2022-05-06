@@ -18,6 +18,7 @@ import {
   View,
 } from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
+import {Timeline} from './src/components/timelines'
 import {getThumbnails} from './src/utils'
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
         resizeMode={'cover'}
       />
       <View style={styles.frame}>{images}</View>
+      <Timeline items={files} onSelect={setSelected} />
     </SafeAreaView>
   )
 }
