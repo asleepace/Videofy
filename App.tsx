@@ -9,36 +9,19 @@
  */
 
 import React, {useEffect, useState} from 'react'
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native'
+import {Image, SafeAreaView, StatusBar, StyleSheet, View} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen'
 import {getThumbnails} from './src/utils'
 
 const App = () => {
   const [files, setFiles] = useState<ReadDirItem[]>([])
-
-  const isDarkMode = useColorScheme() === 'dark'
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  }
+  const [selected, setSelected] = useState<ReadDirItem>()
 
   useEffect(() => {
     getThumbnails().then(data => setFiles(data))
   }, [])
 
-  console.log({files})
-
   const images = files.map(data => {
-    console.log(data)
     return (
       <Image
         source={{uri: `file://${data.path}`}}
@@ -49,14 +32,10 @@ const App = () => {
   })
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View style={styles.frame}>{images}</View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+      <Image source={{uri: selected?.path}} style={styles.mainImage} />
+      <View style={styles.frame}>{images}</View>
     </SafeAreaView>
   )
 }
@@ -87,6 +66,17 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  mainImage: {
+    backgroundColor: '#EEE',
+    borderRadius: 8,
+    height: 400,
+    width: 240,
   },
 })
 
