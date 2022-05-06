@@ -76,7 +76,7 @@ const App = () => {
 
   const images = files.map(data => {
     console.log(data)
-    return <Image source={{ uri: `file://${data.path}` }} style={{ width: 25, height: 25 }} />
+    return <Image source={{ uri: `file://${data.path}` }} style={styles.image} key={data.name} />
   })
 
   return (
@@ -86,13 +86,25 @@ const App = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        { images }
+        <View style={styles.frame}>
+          {images}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  frame: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    overflow: 'hidden',
+    padding: 16,
+  },
+  image: {
+    height: 40,
+    flex: 1,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
