@@ -1,1 +1,1 @@
-export { getThumbnails } from './ffmpeg';
+export {getThumbnails} from './ffmpeg'

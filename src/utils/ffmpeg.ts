@@ -1,5 +1,5 @@
-import {FFmpegKit, ReturnCode} from 'ffmpeg-kit-react-native';
-import FileSystem from 'react-native-fs';
+import {FFmpegKit, ReturnCode} from 'ffmpeg-kit-react-native'
+import FileSystem from 'react-native-fs'
 /**
  * FFMPEG Utilities
  * Utilities commands
@@ -56,7 +56,7 @@ export function getFilePath() {
 }
 
 function printFiles() {
-  FileSystem.readDir(`${FileSystem.TemporaryDirectoryPath}`).then((result) => {
-    console.log({ result })
+  FileSystem.readDir(`${FileSystem.TemporaryDirectoryPath}`).then(result => {
+    console.log({result})
   })
 }

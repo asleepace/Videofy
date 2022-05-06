@@ -8,75 +8,44 @@
  * @format
  */
 
-import React, { useEffect, useState } from 'react';
-import { getThumbnails } from './src/utils';
+import React, {useEffect, useState} from 'react'
 import {
   Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+} from 'react-native'
+import {ReadDirItem} from 'react-native-fs'
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen'
+import {getThumbnails} from './src/utils'
 
 const App = () => {
+  const [files, setFiles] = useState<ReadDirItem[]>([])
 
-  const [files, setFiles] = useState<string[]>([])
-
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }
 
-  useEffect(async () => {
-    const output = await getThumbnails('src/assets/video.mp4')
-    setFiles(output)
+  useEffect(() => {
+    getThumbnails().then(data => setFiles(data))
   }, [])
 
-  console.log({ files })
+  console.log({files})
 
   const images = files.map(data => {
     console.log(data)
-    return <Image source={{ uri: `file://${data.path}` }} style={styles.image} key={data.name} />
+    return (
+      <Image
+        source={{uri: `file://${data.path}`}}
+        style={styles.image}
+        key={data.name}
+      />
+    )
   })
 
   return (
@@ -86,13 +55,11 @@ const App = () => {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
-        <View style={styles.frame}>
-          {images}
-        </View>
+        <View style={styles.frame}>{images}</View>
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   frame: {
@@ -121,6 +88,6 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
+})
 
-export default App;
+export default App
