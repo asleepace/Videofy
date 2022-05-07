@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
   Image,
   NativeScrollEvent,
@@ -18,11 +18,10 @@ import {ReadDirItem} from 'react-native-fs'
 interface TimeLineProps {
   items: ReadDirItem[]
   onSelect(file: ReadDirItem): void
+  selected: ReadDirItem
 }
 
-export const Timeline = ({items, onSelect}: TimeLineProps) => {
-  const [selected, setSelected] = useState<ReadDirItem>()
-
+export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
   const images = items.map(data => {
     const onPress = () => onSelect(data)
     return (
@@ -38,10 +37,8 @@ export const Timeline = ({items, onSelect}: TimeLineProps) => {
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = parseInt(event.nativeEvent.contentOffset.x / 60)
-    setSelected(items[index])
+    onSelect(items[index])
   }
-
-  //       <Image source={{ src:  }} style={styles.selectedImage} />
 
   const SelectedFrame = () => (
     <Image
@@ -52,12 +49,13 @@ export const Timeline = ({items, onSelect}: TimeLineProps) => {
   )
 
   return (
-    <View>
+    <View style={styles.row}>
       <SelectedFrame />
       <ScrollView
         horizontal={true}
         style={styles.container}
         onScroll={onScroll}
+        scrollEventThrottle={16}
         contentContainerStyle={styles.content}>
         {images}
       </ScrollView>
@@ -84,6 +82,9 @@ const styles = StyleSheet.create({
   },
   container: {
     padding: 16,
+  },
+  row: {
+    flexDirection: 'row',
   },
   frame: {
     flexDirection: 'row',

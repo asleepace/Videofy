@@ -30,7 +30,7 @@ const App = () => {
         style={styles.mainImage}
         resizeMode={'cover'}
       />
-      <Timeline items={files} onSelect={setSelected} />
+      <Timeline selected={selected} items={files} onSelect={setSelected} />
     </SafeAreaView>
   )
 }
