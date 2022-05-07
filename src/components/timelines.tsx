@@ -1,5 +1,13 @@
-import React from 'react'
-import {Image, ScrollView, StyleSheet, TouchableHighlight} from 'react-native'
+import React, {useState} from 'react'
+import {
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
+  TouchableHighlight,
+  View,
+} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
 /**
  * Timeline
@@ -13,6 +21,8 @@ interface TimeLineProps {
 }
 
 export const Timeline = ({items, onSelect}: TimeLineProps) => {
+  const [selected, setSelected] = useState<ReadDirItem>()
+
   const images = items.map(data => {
     const onPress = () => onSelect(data)
     return (
@@ -26,17 +36,48 @@ export const Timeline = ({items, onSelect}: TimeLineProps) => {
     )
   })
 
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const index = parseInt(event.nativeEvent.contentOffset.x / 60)
+    setSelected(items[index])
+  }
+
+  //       <Image source={{ src:  }} style={styles.selectedImage} />
+
+  const SelectedFrame = () => (
+    <Image
+      source={{uri: `file://${selected?.path}`}}
+      style={styles.selectedFrame}
+      key={selected?.name}
+    />
+  )
+
   return (
-    <ScrollView
-      horizontal={true}
-      style={styles.container}
-      contentContainerStyle={styles.content}>
-      {images}
-    </ScrollView>
+    <View>
+      <SelectedFrame />
+      <ScrollView
+        horizontal={true}
+        style={styles.container}
+        onScroll={onScroll}
+        contentContainerStyle={styles.content}>
+        {images}
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  selectedFrame: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    borderRadius: 8,
+    borderColor: 'black',
+    borderWidth: 2,
+    zIndex: 100,
+    height: 80,
+    width: 60,
+    left: 16,
+    top: 8,
+  },
   content: {
     flexDirection: 'row',
     height: 60,
