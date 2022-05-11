@@ -1,8 +1,9 @@
 # Videofy
 
-A simple application for selecting a thumbail from a video.
+A simple application for selecting a thumbail from a video. The video is statically bundled with the application and thumbnails are generated on the fly using [ffmpeg](https://ffmpeg.org/). The user interface is extremely basic and essentially loads the generated thumbnails into a scrollable list, where each image can either be tapped or dragged through the reticle.
 
-![Simulator Screen Shot - iPhone 8 - 2022-05-10 at 22 17 59](https://user-images.githubusercontent.com/10716803/167777913-295793be-ac5f-421a-962e-a68095f5d35f.png)
+![E20B59E6-D012-4E11-85F6-64913E5F7945](https://user-images.githubusercontent.com/10716803/167780377-825f07ea-a420-4eca-83c7-b0710ddc4d26.GIF)
+
 
 ## Prerequisites
 
