@@ -48,7 +48,7 @@ export async function getThumbnails() {
  * generally be loading media from the users camera or video library,
  * but for the sake of this assignment we will load a local file.
  */
-export async function getFilePath() {
+async function getFilePath() {
   if (Platform.OS === 'android') {
     await copyVideoAndroid()
     return `${FileSystem.DocumentDirectoryPath}/video.mp4`

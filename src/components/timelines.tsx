@@ -20,7 +20,7 @@ import {ReadDirItem} from 'react-native-fs'
 interface TimeLineProps {
   items: ReadDirItem[]
   onSelect(file: ReadDirItem): void
-  selected: ReadDirItem
+  selected: ReadDirItem | undefined
 }
 
 export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
@@ -62,12 +62,13 @@ export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
    * array index by dividing the x offset by the width of the images.
    */
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (!items.length) return
     const {x} = event.nativeEvent.contentOffset
     const imageWidth = 60
-    const index = Math.floor(x / imageWidth)
-    if (index >= 0 && index < items.length) {
-      onSelect(items[index])
-    }
+    const pos = Math.ceil(x / imageWidth)
+    const end = Math.min(pos, items.length - 1)
+    const idx = Math.max(0, end)
+    onSelect(items[idx])
   }
 
   /**
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 2,
     zIndex: 100,
+    elevation: 1,
     height: 80,
     width: 60,
     left: 16,

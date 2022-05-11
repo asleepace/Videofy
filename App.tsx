@@ -18,15 +18,21 @@ const App = () => {
   const [files, setFiles] = useState<ReadDirItem[]>([])
   const [selected, setSelected] = useState<ReadDirItem>()
 
+  /**
+   * When this component is first rendered generate a list of thumnbails
+   * and update the state.
+   */
   useEffect(() => {
     getThumbnails().then(data => setFiles(data))
   }, [])
+
+  console.log({selected})
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'dark-content'} />
       <Image
-        source={{uri: selected?.path}}
+        source={{uri: `file://${selected?.path}`}}
         style={styles.mainImage}
         resizeMode={'cover'}
       />
