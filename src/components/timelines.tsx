@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {
   Image,
   NativeScrollEvent,
@@ -9,10 +9,12 @@ import {
   View,
 } from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
+
 /**
  * Timeline
  * This component displays a time line of images as well as a
- * method for selecting a frame
+ * method for selecting a frame. Video frames are passed in via
+ * the items prop which is an array of ReadDireItems.
  */
 
 interface TimeLineProps {
@@ -22,24 +24,57 @@ interface TimeLineProps {
 }
 
 export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
-  const images = items.map(data => {
-    const onPress = () => onSelect(data)
-    return (
-      <TouchableHighlight style={styles.image} onPress={onPress}>
-        <Image
-          source={{uri: `file://${data.path}`}}
-          style={styles.image}
-          key={data.name}
-        />
-      </TouchableHighlight>
-    )
-  })
+  /**
+   * When this component is updated with the list of video frames we want
+   * to select a default image, which in this case will be the first
+   * element.
+   */
+  useEffect(() => {
+    if (!selected && items.length) {
+      onSelect(items[0])
+    }
+  }, [items.length, selected])
 
+  /**
+   * Creates a list of clickable images that will be displayed in the scroll
+   * view below, this should only be rendered when the items array changes
+   * length.
+   */
+  const images = useMemo(() => {
+    return items.map((data, index) => {
+      const onPress = () => onSelect(data)
+      const key = `${index}:${data.name}`
+      return (
+        <TouchableHighlight style={styles.image} onPress={onPress}>
+          <Image
+            source={{uri: `file://${data.path}`}}
+            style={styles.image}
+            key={key}
+          />
+        </TouchableHighlight>
+      )
+    })
+  }, [items])
+
+  /**
+   * There are two ways a user can select an image, the first is by scrolling
+   * the ScrollView which will trigger this method. We find the corresponding
+   * array index by dividing the x offset by the width of the images.
+   */
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = parseInt(event.nativeEvent.contentOffset.x / 60)
-    onSelect(items[index])
+    const {x} = event.nativeEvent.contentOffset
+    const imageWidth = 60
+    const index = Math.floor(x / imageWidth)
+    if (index >= 0 && index < items.length) {
+      onSelect(items[index])
+    }
   }
 
+  /**
+   * This method renders the currently selected image frame on the ScrollView.
+   * Since all of the image frames are local files we need to prepend the src
+   * attribute with file:// when loading.
+   */
   const SelectedFrame = () => (
     <Image
       source={{uri: `file://${selected?.path}`}}
@@ -55,7 +90,7 @@ export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
         horizontal={true}
         style={styles.container}
         onScroll={onScroll}
-        scrollEventThrottle={16}
+        scrollEventThrottle={2}
         contentContainerStyle={styles.content}>
         {images}
       </ScrollView>
