@@ -2,6 +2,9 @@
 
 A simple application for selecting a thumbail from a video.
 
+![Simulator Screen Shot - iPhone 8 - 2022-05-10 at 22 17 59](https://user-images.githubusercontent.com/10716803/167777913-295793be-ac5f-421a-962e-a68095f5d35f.png)
+
+
 ## Prerequisites
 
 Make sure you are using the new react-native development environment [outlined here](https://reactnative.dev/docs/next/environment-setup) along with the following:
