@@ -48,6 +48,14 @@ To run the application on Android:
 npx react-native run-android
 ```
 
+## Project Structure
+
+The application loads a local static video file which is then used in conjunction with [ffmpeg](https://ffmpeg.org/) to render a list of selectable thumbnails.
+
+- `App.tsx` contains the application
+  - `./src/components` contains visual elements
+  - `./src/utils` contains business logic
+
 ## Troubleshooting
 
 > - What went wrong:
