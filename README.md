@@ -60,13 +60,13 @@ The application loads a local static video file which is then used in conjunctio
 
 ## Troubleshooting
 
-### 1. The iOS project fails when running `npx react-native run-ios` with the following error:
+<b>1. The iOS project fails when running `npx react-native run-ios` with the following error</b>
 
 > error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
 
 [Check out this S/O post for the issue above](https://stackoverflow.com/a/57286808/4326715)
 
-### 2. The Android project fails to build when running `npx react-native run-android` with the following error:
+<b>2. The Android project fails to build when running `npx react-native run-android` with the following error</b>
 
 > - What went wrong:
 >   Execution failed for task ':app:mergeDebugNativeLibs'.
@@ -87,7 +87,7 @@ android{
 }
 ```
 
-### 3. The Android project fails to build becuase of the wrong Java version
+<b>3. The Android project fails to build becuase of the wrong Java version</b>
 
 > - What went wrong:
 >   A problem occurred evaluating project ':app'.
