@@ -8,92 +8,52 @@
  * @format
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import React, {useEffect, useState} from 'react'
+import {Image, SafeAreaView, StatusBar, StyleSheet} from 'react-native'
+import {ReadDirItem} from 'react-native-fs'
+import {Timeline} from './src/components/timelines'
+import {getThumbnails} from './src/utils'
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [files, setFiles] = useState<ReadDirItem[]>([])
+  const [selected, setSelected] = useState<ReadDirItem>()
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  /**
+   * When this component is first rendered generate a list of thumnbails
+   * and update the state.
+   */
+  useEffect(() => {
+    getThumbnails().then(data => setFiles(data))
+  }, [])
+
+  console.log({selected})
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
+      <Image
+        source={{uri: `file://${selected?.path}`}}
+        style={styles.mainImage}
+        resizeMode={'cover'}
+      />
+      <Timeline selected={selected} items={files} onSelect={setSelected} />
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
+  frame: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    overflow: 'hidden',
+    width: '100%',
+    height: 60,
+    padding: 16,
+  },
+  image: {
+    height: 60,
+    flex: 1,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
@@ -110,6 +70,17 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
-});
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  mainImage: {
+    backgroundColor: '#EEE',
+    borderRadius: 8,
+    height: 400,
+    width: 240,
+  },
+})
 
-export default App;
+export default App

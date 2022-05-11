@@ -134,6 +134,15 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    // Fixes an issue with ffmpeg and libc++
+    // https://github.com/tanersener/ffmpeg-kit/wiki/Tips#2-depending-another-android-library-containing-libc_sharedso
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+
     defaultConfig {
         applicationId "com.videofy"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -268,6 +277,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation project(':react-native-fs')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
