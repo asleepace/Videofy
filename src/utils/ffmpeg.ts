@@ -3,7 +3,12 @@ import FileSystem from 'react-native-fs'
 /**
  * FFMPEG Utilities
  * Utilities commands
+ *
+ * The OUTPUT_DIRECTORY is where all of the screen captures will be saved and read from,
+ * becuase of how react-native-fs works on android this needs to be the documents
+ * directory: https://www.npmjs.com/package/react-native-fs#usage-android
  */
+const OUTPUT_DIRECTORY = FileSystem.DocumentDirectoryPath
 
 /**
  * Generates thumnails at regular intervals
@@ -11,7 +16,7 @@ import FileSystem from 'react-native-fs'
  * @returns a string command to pass into ffmpeg
  */
 export function generateThumbnails(videoPath: string) {
-  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr ${FileSystem.TemporaryDirectoryPath}/output_%04d.jpg`
+  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr ${OUTPUT_DIRECTORY}/output_%04d.jpg`
 }
 
 export async function getThumbnails() {
@@ -21,7 +26,7 @@ export async function getThumbnails() {
 
   const session = await FFmpegKit.execute(commands)
   const returnCode = await session.getReturnCode()
-  const output = await FileSystem.readDir(FileSystem.TemporaryDirectoryPath)
+  const output = await FileSystem.readDir(OUTPUT_DIRECTORY)
 
   console.log(output)
 
@@ -52,11 +57,12 @@ export async function getThumbnails() {
 }
 
 export function getFilePath() {
+  printFiles()
   return `${FileSystem.MainBundlePath}/video.mp4`
 }
 
 function printFiles() {
-  FileSystem.readDir(`${FileSystem.TemporaryDirectoryPath}`).then(result => {
+  FileSystem.readDir(`${OUTPUT_DIRECTORY}`).then(result => {
     console.log({result})
   })
 }
