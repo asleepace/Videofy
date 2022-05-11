@@ -4,7 +4,6 @@ A simple application for selecting a thumbail from a video.
 
 ![Simulator Screen Shot - iPhone 8 - 2022-05-10 at 22 17 59](https://user-images.githubusercontent.com/10716803/167777913-295793be-ac5f-421a-962e-a68095f5d35f.png)
 
-
 ## Prerequisites
 
 Make sure you are using the new react-native development environment [outlined here](https://reactnative.dev/docs/next/environment-setup) along with the following:
@@ -61,14 +60,14 @@ The application loads a local static video file which is then used in conjunctio
 
 ## Troubleshooting
 
-> error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
+1. > error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
 
 [Check out this S/O post for the issue above](https://stackoverflow.com/a/57286808/4326715)
 
-> - What went wrong:
->   Execution failed for task ':app:mergeDebugNativeLibs'.
->   A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
->   2 files found with path 'lib/arm64-v8a/libc++\_shared.so' from inputs
+2. > - What went wrong:
+   >   Execution failed for task ':app:mergeDebugNativeLibs'.
+   >   A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
+   >   2 files found with path 'lib/arm64-v8a/libc++\_shared.so' from inputs
 
 add this in your `node_module/ffmpeg-kit-react-native/android/build.gradle`
 
@@ -84,10 +83,10 @@ android{
 }
 ```
 
-> - What went wrong:
->   A problem occurred evaluating project ':app'.
->   Failed to apply plugin 'com.android.internal.application'.
->   Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
+3. > - What went wrong:
+   >   A problem occurred evaluating project ':app'.
+   >   Failed to apply plugin 'com.android.internal.application'.
+   >   Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
 
 run the following command
 
