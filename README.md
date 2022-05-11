@@ -60,14 +60,18 @@ The application loads a local static video file which is then used in conjunctio
 
 ## Troubleshooting
 
-1. > error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
+### 1. The iOS project fails when running `npx react-native run-ios` with the following error:
+
+> error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
 
 [Check out this S/O post for the issue above](https://stackoverflow.com/a/57286808/4326715)
 
-2. > - What went wrong:
-   >   Execution failed for task ':app:mergeDebugNativeLibs'.
-   >   A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
-   >   2 files found with path 'lib/arm64-v8a/libc++\_shared.so' from inputs
+### 2. The Android project fails to build when running `npx react-native run-android` with the following error:
+
+> - What went wrong:
+>   Execution failed for task ':app:mergeDebugNativeLibs'.
+>   A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction
+>   2 files found with path 'lib/arm64-v8a/libc++\_shared.so' from inputs
 
 add this in your `node_module/ffmpeg-kit-react-native/android/build.gradle`
 
@@ -83,16 +87,24 @@ android{
 }
 ```
 
-3. > - What went wrong:
-   >   A problem occurred evaluating project ':app'.
-   >   Failed to apply plugin 'com.android.internal.application'.
-   >   Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
+### 3. The Android project fails to build becuase of the wrong Java version
+
+> - What went wrong:
+>   A problem occurred evaluating project ':app'.
+>   Failed to apply plugin 'com.android.internal.application'.
+>   Android Gradle plugin requires Java 11 to run. You are currently using Java 1.8.
 
 run the following command
 
 ```bash
 brew tap homebrew/cask-versions
 brew install --cask zulu11
+```
+
+You will also need to update your `PATH` with the following:
+
+```
+export JAVA_HOME=$(/usr/libexec/java_home -v 11)
 ```
 
 ## More Resources
