@@ -2,6 +2,8 @@
 
 A simple application for selecting a thumbail from a video.
 
+## Prerequisites
+
 ## Installation
 
 Download and install the repository by running the following:
@@ -66,6 +68,8 @@ brew tap homebrew/cask-versions
 brew install --cask zulu11
 ```
 
-## Example Projects
+## More Resources
 
+- [ffmpeg-kit-react-native](https://www.npmjs.com/package/ffmpeg-kit-react-native?activeTab=readme)
+- [react-native-fs](https://www.npmjs.com/package/react-native-fs)
 - [FFMPEG Exmaples](https://github.com/tanersener/ffmpeg-kit-test/blob/main/react-native/test-app-local-dependency/src/video-util.js)

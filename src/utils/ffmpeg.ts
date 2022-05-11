@@ -18,7 +18,7 @@ const OUTPUT_DIRECTORY = FileSystem.DocumentDirectoryPath
  * @returns a string command to pass into ffmpeg
  */
 export function generateThumbnails(videoPath: string) {
-  return `-i ${videoPath} -vf "select='not(mod(t,5))'" -vsync vfr ${OUTPUT_DIRECTORY}/output_%04d.jpg`
+  return `-i ${videoPath} -vf "select='not(mod(t,1))'" -vsync vfr ${OUTPUT_DIRECTORY}/output_%04d.jpg`
 }
 
 export async function getThumbnails() {
