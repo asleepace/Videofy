@@ -4,6 +4,19 @@ A simple application for selecting a thumbail from a video.
 
 ## Prerequisites
 
+Make sure you are using the new react-native development environment [outlined here](https://reactnative.dev/docs/next/environment-setup) along with the following:
+
+| Software       | Version |
+| -------------- | :-----: |
+| Node           | 14.17.0 |
+| Yarn           | 1.22.17 |
+| Xcode          | 13.3.1  |
+| Ruby           |  2.7.3  |
+| CocoaPods      | 1.11.3  |
+| React Native   | 0.68.1  |
+| Android Studio |  7.0.4  |
+| Java (openjdk) | 11.0.15 |
+
 ## Installation
 
 Download and install the repository by running the following:
