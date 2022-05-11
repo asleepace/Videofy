@@ -58,6 +58,10 @@ The application loads a local static video file which is then used in conjunctio
 
 ## Troubleshooting
 
+> error Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65
+
+[Check out this S/O post for the issue above](https://stackoverflow.com/a/57286808/4326715)
+
 > - What went wrong:
 >   Execution failed for task ':app:mergeDebugNativeLibs'.
 >   A failure occurred while executing com.android.build.gradle.internal.tasks.MergeNativeLibsTask$MergeNativeLibsTaskWorkAction

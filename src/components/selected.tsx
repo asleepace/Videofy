@@ -1,5 +1,5 @@
 import React from 'react'
-import {Image, StyleSheet} from 'react-native'
+import {ActivityIndicator, Image, StyleSheet} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
 
 interface SelectedProps {
@@ -7,9 +7,11 @@ interface SelectedProps {
 }
 
 /**
- * Displays a large image preview of a given selected item.
+ * Displays a large image preview of a given selected item, or if there is
+ * no selected item will display a loading indicator.
  */
 export const Selected = ({selected}: SelectedProps) => {
+  if (!selected) return <ActivityIndicator size={'small'} color={'black'} />
   const uri = `file://${selected?.path}`
   return <Image source={{uri}} style={styles.mainImage} resizeMode={'cover'} />
 }

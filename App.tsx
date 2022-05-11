@@ -22,7 +22,7 @@ const App = () => {
 
   /**
    * When this component is first rendered generate a list of thumnbails
-   * and update the state.
+   * and update the state. TODO: need to add error state.
    */
   useEffect(() => {
     getThumbnails({path: 'video.mp4', time: 1})
