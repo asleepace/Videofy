@@ -25,7 +25,9 @@ const App = () => {
    * and update the state.
    */
   useEffect(() => {
-    getThumbnails().then(data => setFiles(data))
+    getThumbnails({path: 'video.mp4', time: 1})
+      .then(data => setFiles(data))
+      .catch(error => console.warn({error}))
   }, [])
 
   return (

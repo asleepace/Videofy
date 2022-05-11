@@ -12,18 +12,17 @@ import FileSystem from 'react-native-fs'
  */
 const OUTPUT_DIRECTORY = FileSystem.DocumentDirectoryPath
 
-/**
- * Generates thumnails at regular intervals
- * https://ottverse.com/thumbnails-screenshots-using-ffmpeg/
- * @returns a string command to pass into ffmpeg
- */
-export function generateThumbnails(videoPath: string) {
-  return `-i ${videoPath} -vf "select='not(mod(t,1))'" -vsync vfr ${OUTPUT_DIRECTORY}/output_%04d.jpg`
+interface ThumbnailConfig {
+  time: number // the duration between thumbnails
+  path: string // the video file name
 }
 
-export async function getThumbnails() {
-  const filePath = await getFilePath()
-  const commands = generateThumbnails(filePath)
+/**
+ * This method takes an in
+ */
+export async function getThumbnails({time, path}: ThumbnailConfig) {
+  const filePath = await getFilePath(path)
+  const commands = generateThumbnails(filePath, time)
   console.log('loading filepath:', commands)
 
   const session = await FFmpegKit.execute(commands)
@@ -44,25 +43,35 @@ export async function getThumbnails() {
 }
 
 /**
+ * Generates thumnails at regular intervals
+ * https://ottverse.com/thumbnails-screenshots-using-ffmpeg/
+ * @returns a string command to pass into ffmpeg
+ */
+function generateThumbnails(videoPath: string, time: number) {
+  return `-i ${videoPath} -vf "select='not(mod(t,${time}))'" -vsync vfr ${OUTPUT_DIRECTORY}/output_%04d.jpg`
+}
+
+/**
  * The file path for the static video file. In a real project we would
  * generally be loading media from the users camera or video library,
  * but for the sake of this assignment we will load a local file.
  */
-async function getFilePath() {
+async function getFilePath(fileName: string) {
   if (Platform.OS === 'android') {
-    await copyVideoAndroid()
-    return `${FileSystem.DocumentDirectoryPath}/video.mp4`
+    await copyVideoAndroid(fileName)
+    return `${FileSystem.DocumentDirectoryPath}/${fileName}`
+  } else {
+    return `${FileSystem.MainBundlePath}/${fileName}`
   }
-  return `${FileSystem.MainBundlePath}/video.mp4`
 }
 
 /**
  * Android is a bit quirky with local video files, so we need to copy
  * the local video from assets over to the document directory first.
  */
-function copyVideoAndroid() {
+function copyVideoAndroid(fileName: string) {
   return FileSystem.copyFileAssets(
-    'video.mp4',
-    `${FileSystem.DocumentDirectoryPath}/video.mp4`,
+    fileName,
+    `${FileSystem.DocumentDirectoryPath}/${fileName}`,
   )
 }
