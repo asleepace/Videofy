@@ -38,7 +38,7 @@ Start the packager by running the following command in the project root director
 yarn start
 ```
 
-To run the application on iOS:
+To run the application on iOS (if this fails see Troubleshooting below), the first time you may need to build from XCode directly.
 
 ```bash
 npx react-native run-ios
