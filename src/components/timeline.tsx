@@ -51,12 +51,8 @@ export const Timeline = ({items, selected, onSelect}: TimelineProps) => {
       const onPress = () => onSelect(data)
       const key = `${index}:${data.name}`
       return (
-        <TouchableHighlight style={styles.image} onPress={onPress}>
-          <Image
-            source={{uri: `file://${data.path}`}}
-            style={styles.image}
-            key={key}
-          />
+        <TouchableHighlight style={styles.image} onPress={onPress} key={key}>
+          <Image source={{uri: `file://${data.path}`}} style={styles.image} />
         </TouchableHighlight>
       )
     })
