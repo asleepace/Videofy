@@ -17,13 +17,19 @@ import {ReadDirItem} from 'react-native-fs'
  * the items prop which is an array of ReadDireItems.
  */
 
-interface TimeLineProps {
+interface TimelineProps {
   items: ReadDirItem[]
   onSelect(file: ReadDirItem): void
   selected: ReadDirItem | undefined
 }
 
-export const Timeline = ({items, selected, onSelect}: TimeLineProps) => {
+/**
+ * This component renders a horrizontal scrollable list of images which a user
+ * can tap on or drag through the selector to pick from. The list of thumnails
+ * is passed in along with a method to select as well as any currently selected
+ * item. Used in conjunction with getThumbnails()
+ */
+export const Timeline = ({items, selected, onSelect}: TimelineProps) => {
   /**
    * When this component is updated with the list of video frames we want
    * to select a default image, which in this case will be the first

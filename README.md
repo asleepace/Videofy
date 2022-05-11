@@ -1,6 +1,6 @@
 # Videofy
 
-A short for video editing application
+A simple application for selecting a thumbail from a video.
 
 ## Installation
 

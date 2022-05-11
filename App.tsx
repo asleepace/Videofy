@@ -11,7 +11,7 @@
 import React, {useEffect, useState} from 'react'
 import {Image, SafeAreaView, StatusBar, StyleSheet} from 'react-native'
 import {ReadDirItem} from 'react-native-fs'
-import {Timeline} from './src/components/timelines'
+import {Timeline} from './src/components/timeline'
 import {getThumbnails} from './src/utils'
 
 const App = () => {
