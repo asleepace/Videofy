@@ -15,6 +15,10 @@ import {Timeline} from './src/components/timeline'
 import {getThumbnails} from './src/utils'
 
 const App = () => {
+  /**
+   * files holds the generated array of thumnail items from the video and
+   * selected is the currently selected thumbnail.
+   */
   const [files, setFiles] = useState<ReadDirItem[]>([])
   const [selected, setSelected] = useState<ReadDirItem>()
 
@@ -25,8 +29,6 @@ const App = () => {
   useEffect(() => {
     getThumbnails().then(data => setFiles(data))
   }, [])
-
-  console.log({selected})
 
   return (
     <SafeAreaView style={styles.container}>
