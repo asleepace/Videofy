@@ -1,5 +1,7 @@
 import {FFmpegKit, ReturnCode} from 'ffmpeg-kit-react-native'
+import {Platform} from 'react-native'
 import FileSystem from 'react-native-fs'
+
 /**
  * FFMPEG Utilities
  * Utilities commands
@@ -20,7 +22,7 @@ export function generateThumbnails(videoPath: string) {
 }
 
 export async function getThumbnails() {
-  const filePath = getFilePath()
+  const filePath = await getFilePath()
   const commands = generateThumbnails(filePath)
   console.log('loading filepath:', commands)
 
@@ -28,7 +30,7 @@ export async function getThumbnails() {
   const returnCode = await session.getReturnCode()
   const output = await FileSystem.readDir(OUTPUT_DIRECTORY)
 
-  console.log(output)
+  console.log({output})
 
   if (ReturnCode.isSuccess(returnCode)) {
     console.log('success!')
@@ -39,30 +41,28 @@ export async function getThumbnails() {
   }
 
   return output
-
-  // FFmpegKit.execute(commands).then(async session => {
-  //   const returnCode = await session.getReturnCode()
-  //   const output = await session.getOutput()
-  //   console.log('[ffmpeg] finished with session:', { session, returnCode, output })
-  //   printFiles()
-
-  //   if (ReturnCode.isSuccess(returnCode)) {
-  //     console.log('success!')
-  //   } else if (ReturnCode.isCancel(returnCode)) {
-  //     console.log('cancelled')
-  //   } else {
-  //     console.log('error')
-  //   }
-  // });
 }
 
-export function getFilePath() {
-  printFiles()
+/**
+ * The file path for the static video file. In a real project we would
+ * generally be loading media from the users camera or video library,
+ * but for the sake of this assignment we will load a local file.
+ */
+export async function getFilePath() {
+  if (Platform.OS === 'android') {
+    await copyVideoAndroid()
+    return `${FileSystem.DocumentDirectoryPath}/video.mp4`
+  }
   return `${FileSystem.MainBundlePath}/video.mp4`
 }
 
-function printFiles() {
-  FileSystem.readDir(`${OUTPUT_DIRECTORY}`).then(result => {
-    console.log({result})
-  })
+/**
+ * Android is a bit quirky with local video files, so we need to copy
+ * the local video from assets over to the document directory first.
+ */
+function copyVideoAndroid() {
+  return FileSystem.copyFileAssets(
+    'video.mp4',
+    `${FileSystem.DocumentDirectoryPath}/video.mp4`,
+  )
 }
