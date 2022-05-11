@@ -2,15 +2,32 @@
 
 A short for video editing application
 
+## Installation
+
+Download and install the repository by running the following:
+
+```bash
+git clone https://github.com/asleepace/Videofy.git
+cd ./Videofy/
+yarn
+cd ./ios/ && pod install && cd ..
+```
+
 ## Getting Started
 
-To run the application use one of the following commands
+Start the packager by running the following command in the project root directory:
+
+```bash
+yarn start
+```
+
+To run the application on iOS:
 
 ```bash
 npx react-native run-ios
 ```
 
-or for Android
+To run the application on Android:
 
 ```bash
 npx react-native run-android
